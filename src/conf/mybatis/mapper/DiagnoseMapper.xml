@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.DiagnoseMapper">
+
+	<insert id="insertDiagnose" useGeneratedKeys="true" keyProperty="id" parameterType="diagnose">
+		INSERT INTO md_diagnose (
+			customer_id,
+			diagnose_date,
+			diagnose_time,
+			remark1,
+			remark2,
+			remark3,
+			channel_type)  
+	 VALUE (
+	        #{customer_id},
+	        #{diagnose_date,jdbcType=VARCHAR},
+			#{diagnose_time,jdbcType=VARCHAR},
+			#{remark1,jdbcType=VARCHAR},
+			#{remark2,jdbcType=VARCHAR},
+			#{remark3,jdbcType=VARCHAR},
+			#{channel_type}
+			)
+	</insert>
+	
+	<insert id="insertDiagnoseDetail" parameterType="java.util.List">
+		INSERT INTO md_diagnose_detail (
+		    diagnose_id,
+		    symptom_time_value_id,
+		    symptom_time_value_name,
+		    level,
+			remark1,
+			remark2,
+			remark3)  
+	 VALUES 
+	  <foreach collection="list" item="item" index="index" separator="," >  
+	       ( 
+	        #{item.diagnose_id},
+			#{item.symptom_time_value_id},
+			#{item.symptom_time_value_name},
+			#{item.level},
+			#{item.remark1,jdbcType=VARCHAR},
+			#{item.remark2,jdbcType=VARCHAR},
+			#{item.remark3,jdbcType=VARCHAR}
+			)
+			</foreach> 
+	</insert>
+	
+	<!-- <insert id="insertDiagnoseDetail" parameterType="diagnoseDetail">
+	     <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+		    select LAST_INSERT_ID() 
+		 </selectKey>
+		INSERT INTO md_diagnose_detail (
+		    diagnose_id,
+		    symptom_time_value_id,
+			remark1,
+			remark2,
+			remark3)  
+	 VALUE (
+	        #{diagnose_id},
+			#{symptom_time_value_id},
+			#{remark1,jdbcType=VARCHAR},
+			#{remark2,jdbcType=VARCHAR},
+			#{remark3,jdbcType=VARCHAR}
+			)
+	</insert> -->
+	
+	<insert id="insertDiagnoseResult" parameterType="diagnoseResult">
+	     <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+		    select LAST_INSERT_ID() 
+		 </selectKey>
+		INSERT INTO md_diagnose_result(
+		    diagnose_id,
+		    customer_id,
+		    diagnose_result_date,
+		    diagnose_result_time,
+		    in_bw_first_code,
+		    in_bw_first_name,
+		    in_bw_first_value,
+		    in_bw_second_code,
+		    in_bw_second_name,
+		    in_bw_second_value,
+		    in_by_first_code,
+		    in_by_first_name,
+		    in_by_first_value,
+		    in_by_second_code,
+		    in_by_second_name,
+		    in_by_second_value,
+		    out_bw_code,
+		    out_bw_name,
+		    out_bw_value,
+		    out_by_code,
+		    out_by_name,
+		    out_by_value,
+		    symptom_prescription_id,
+		    symptom_prescription_name,
+		    prescription1_code,
+		    prescription1_name,
+		    prescription1_medicinal,
+		    prescription2_code,
+		    prescription2_name,
+		    prescription2_medicinal,
+		    prescription3_code,
+		    prescription3_name,
+		    prescription3_medicinal,
+		    prescription4_code,
+		    prescription4_name,
+		    prescription4_medicinal,
+		    prescription5_code,
+		    prescription5_name,
+		    prescription5_medicinal,
+		    ac_medicinal,
+		    ad_medicinal,
+		    bc_medicinal,
+		    bd_medicinal,
+		    ef_medicinal,
+		    g_medicinal,
+			remark1,
+			remark2,
+			remark3,
+			sex,
+			is_first_diagnose
+			) 
+	 VALUE (
+			#{diagnose_id},
+		    #{customer_id},
+		    #{diagnose_result_date,jdbcType=VARCHAR},
+		    #{diagnose_result_time,jdbcType=VARCHAR},
+		    #{in_bw_first_code,jdbcType=VARCHAR},
+		    #{in_bw_first_name,jdbcType=VARCHAR},
+		    #{in_bw_first_value,jdbcType=FLOAT},
+		    #{in_bw_second_code,jdbcType=VARCHAR},
+		    #{in_bw_second_name,jdbcType=VARCHAR},
+		    #{in_bw_second_value,jdbcType=FLOAT},
+		    #{in_by_first_code,jdbcType=VARCHAR},
+		    #{in_by_first_name,jdbcType=VARCHAR},
+		    #{in_by_first_value,jdbcType=FLOAT},
+		    #{in_by_second_code,jdbcType=VARCHAR},
+		    #{in_by_second_name,jdbcType=VARCHAR},
+		    #{in_by_second_value,jdbcType=FLOAT},
+		    #{out_bw_code,jdbcType=VARCHAR},
+		    #{out_bw_name,jdbcType=VARCHAR},
+		    #{out_bw_value,jdbcType=FLOAT},
+		    #{out_by_code,jdbcType=VARCHAR},
+		    #{out_by_name,jdbcType=VARCHAR},
+		    #{out_by_value,jdbcType=FLOAT},
+		    #{symptom_prescription_id,jdbcType=BIGINT},
+		    #{symptom_prescription_name,jdbcType=VARCHAR},
+		    #{prescription1_code,jdbcType=VARCHAR},
+		    #{prescription1_name,jdbcType=VARCHAR},
+		    #{prescription1_medicinal,jdbcType=VARCHAR},
+		    #{prescription2_code,jdbcType=VARCHAR},
+		    #{prescription2_name,jdbcType=VARCHAR},
+		    #{prescription2_medicinal,jdbcType=VARCHAR},
+		    #{prescription3_code,jdbcType=VARCHAR},
+		    #{prescription3_name,jdbcType=VARCHAR},
+		    #{prescription3_medicinal,jdbcType=VARCHAR},
+		    #{prescription4_code,jdbcType=VARCHAR},
+		    #{prescription4_name,jdbcType=VARCHAR},
+		    #{prescription4_medicinal,jdbcType=VARCHAR},
+		    #{prescription5_code,jdbcType=VARCHAR},
+		    #{prescription5_name,jdbcType=VARCHAR},
+		    #{prescription5_medicinal,jdbcType=VARCHAR},
+		    #{ac_medicinal,jdbcType=VARCHAR},
+		    #{ad_medicinal,jdbcType=VARCHAR},
+		    #{bc_medicinal,jdbcType=VARCHAR},
+		    #{bd_medicinal,jdbcType=VARCHAR},
+		    #{ef_medicinal,jdbcType=VARCHAR},
+		    #{g_medicinal,jdbcType=VARCHAR},
+			#{remark1,jdbcType=VARCHAR},
+			#{remark2,jdbcType=VARCHAR},
+			#{remark3,jdbcType=VARCHAR},
+			#{sex},
+			#{is_first_diagnose})  
+	</insert>
+	
+	<update id="updateDiagnose" parameterType="diagnose">
+	    UPDATE md_diagnose 
+	    <set>
+			<if test="doctor_id != null ">doctor_id = #{doctor_id},</if>
+			<if test="apply_reply_status != null ">apply_reply_status = #{apply_reply_status},</if>
+			<if test="reply_date != null and reply_date != '' ">reply_date = #{reply_date},</if>
+			<if test="reply_time != null and reply_time != '' ">reply_time = #{reply_time},</if>
+			<if test="is_look != null ">is_look = #{is_look},</if>
+		</set> 
+	    where id = #{id}
+	</update>
+	
+	<update id="updateDiagnoseResult" parameterType="diagnoseResult">
+	    UPDATE md_diagnose_result 
+	    <set>
+			<if test="report != null and report != '' ">report = #{report},</if>
+			<if test="medical_history != null and medical_history != '' ">medical_history = #{medical_history},</if>
+		    <if test="prescription6_medicinal != null and prescription6_medicinal != '' ">prescription6_medicinal = #{prescription6_medicinal},</if>
+		    <if test="sick_name != null and sick_name != '' ">sick_name = #{sick_name},</if>
+		    <if test="sick_age != null ">sick_age = #{sick_age},</if>
+		</set>
+	    where 1=1 
+	       <if test="diagnose_id != null">
+		   	   and diagnose_id = #{diagnose_id}
+	       </if>
+	        <if test="id != null">
+		   	   and id = #{id}
+	       </if>
+	</update>
+	
+	<select id="selectDiagnoseData"  resultType="diagnose">
+		SELECT 
+			    d.id,
+			    c.name as customer_name,
+			    c.login_name,
+			    doc.name as doctor_name,
+			    d.diagnose_date,
+			    d.diagnose_time,
+			    d.apply_reply_status,
+			    d.is_look,
+			    dr.id as diagnse_result_id,
+		        (select GROUP_CONCAT( dd.symptom_time_value_name) from md_diagnose_detail dd where dd.diagnose_id = d.id and dd.level = 1) as main_sysptom,
+				(select GROUP_CONCAT( dd.symptom_time_value_name) from md_diagnose_detail dd where dd.diagnose_id = d.id and dd.level = 2) as less_sysptom,    
+				d.remark1,
+				d.remark2,
+				d.remark3,
+				dr.in_bw_first_name,  
+				dr.in_by_first_name,
+				dr.in_by_second_name, 
+				dr.prescription2_medicinal
+		  FROM  md_diagnose d ,md_customer c, md_customer doc, md_diagnose_result dr
+		 where  d.customer_id = c.id
+		   and  d.id = dr.diagnose_id
+		   and  d.doctor_id = doc.id
+		   and  c.id != -1
+		   <if test="domain.customer_id != null and domain.customer_id != ''">
+		   	   and d.customer_id = #{domain.customer_id}
+	       </if>
+	       <if test="domain.diagnose_date_start != null and domain.diagnose_date_start != ''">
+		   	   and d.diagnose_date <![CDATA[ >= ]]> #{domain.diagnose_date_start}
+	       </if>
+	       <if test="domain.diagnose_date_end != null and domain.diagnose_date_end != ''">
+		   	   and d.diagnose_date <![CDATA[ <= ]]> #{domain.diagnose_date_end}
+	       </if>
+	        <if test="domain.login_name != null and domain.login_name != ''">
+		   	   and c.login_name   like '%${domain.login_name}%' 
+	       </if>
+	       <if test="domain.customer_name != null and domain.customer_name != ''">
+		   	   and c.name   like '%${domain.customer_name}%' 
+	       </if>
+	       <if test="domain.doctor_name != null and domain.doctor_name != ''">
+		   	   and doc.name   like '%${domain.doctor_name}%' 
+	       </if>
+	       order by d.apply_reply_status desc ,d.is_look ,diagnose_date desc ,diagnose_time
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,1000
+	           </otherwise>  
+           </choose>
+	</select>
+	
+	<!-- 对应 selectDiagnoseData 查询条件同上-->
+	<select id="selectDiagnoseCount"  resultType="int">
+		SELECT count(*)
+		 FROM  md_diagnose d ,md_customer c, md_customer doc, md_diagnose_result dr
+		 where  d.customer_id = c.id
+		   and  d.id = dr.diagnose_id
+		   and  d.doctor_id = doc.id
+		   and  c.id != -1
+		   <if test="domain.customer_id != null and domain.customer_id != ''">
+		   	   and d.customer_id = #{domain.customer_id}
+	       </if>
+	       <if test="domain.diagnose_date_start != null and domain.diagnose_date_start != ''">
+		   	   and d.diagnose_date <![CDATA[ >= ]]> #{domain.diagnose_date_start}
+	       </if>
+	       <if test="domain.diagnose_date_end != null and domain.diagnose_date_end != ''">
+		   	   and d.diagnose_date <![CDATA[ <= ]]> #{domain.diagnose_date_end}
+	       </if>
+	        <if test="domain.login_name != null and domain.login_name != ''">
+		   	   and c.login_name   like '%${domain.login_name}%' 
+	       </if>
+	       <if test="domain.customer_name != null and domain.customer_name != ''">
+		   	   and c.name   like '%${domain.customer_name}%' 
+	       </if>
+	       <if test="domain.doctor_name != null and domain.doctor_name != ''">
+		   	   and doc.name   like '%${domain.doctor_name}%' 
+	       </if>
+	</select>
+
+	<select id="selectDiagnoseDetailData"  resultType="diagnoseDetail">
+		SELECT 
+		       *
+		  FROM md_diagnose_detail
+		 where 1=1 
+		   <if test="domain.diagnose_id != null and domain.diagnose_id != ''">
+		   	   and diagnose_id = #{domain.diagnose_id}
+	       </if>
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+	<!-- 对应 selectDiagnoseDetailData 查询条件同上-->
+	<select id="selectDiagnoseDetailCount"  resultType="int">
+		SELECT count(*)
+		  FROM md_diagnose_detail
+		 where 1=1 
+		   <if test="domain.diagnose_id != null and domain.diagnose_id != ''">
+		   	   and diagnose_id = #{domain.diagnose_id}
+	       </if>
+	</select>
+	
+	<select id="selectDiagnoseResultData"  resultType="diagnoseResult">
+		SELECT 
+			*
+		  FROM md_diagnose_result
+		 where 1=1 
+		   <if test="domain.diagnose_id != null and domain.diagnose_id != ''">
+		   	   and diagnose_id = #{domain.diagnose_id}
+	       </if>
+	       <if test="domain.customer_id != null and domain.customer_id != ''">
+		   	   and customer_id = #{domain.customer_id}
+	       </if>
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+	<!-- 对应 selectDiagnoseResultData 查询条件同上-->
+	<select id="selectDiagnoseResultCount"  resultType="int">
+		SELECT count(*)
+		  FROM md_diagnose_result
+		 where 1=1 
+		    <if test="domain.diagnose_id != null and domain.diagnose_id != ''">
+		   	   and diagnose_id = #{domain.diagnose_id}
+	       </if>
+	       <if test="domain.customer_id != null and domain.customer_id != ''">
+		   	   and customer_id = #{domain.customer_id}
+	       </if>
+	</select>
+	
+	<select id="selectDiagnoseResultSingle"  resultType="diagnoseResult">
+		SELECT *
+		  FROM md_diagnose_result
+		 where 1=1 
+		   and id = #{value}
+	</select>
+	
+	<select id="selectDiagnoseByPk"  resultType="diagnose">
+		SELECT *
+		  FROM md_diagnose
+		 where 1=1 
+		   and id = #{value}
+	</select>
+	
+	<select id="selectCountWaitingExpert"  resultType="int">
+		select count(*) from md_diagnose t
+		 where t.doctor_id = #{value}
+		   and t.apply_reply_status = 2
+	</select>
+	
+	
+	<select id="selectCountWaitingLook"  resultType="int">
+		select count(*) from md_diagnose t
+		 where t.customer_id= #{value}
+		   and t.is_look = 1
+		   and t.apply_reply_status = 3
+	</select>
+	
+	
+	<select id="selectExpertCheckingDiagnoseData"  resultType="diagnose">
+		SELECT 
+			    d.id,
+			    c.name as customer_name,
+			    d.diagnose_date,
+			    dr.id as diagnse_result_id,
+		        (select GROUP_CONCAT( dd.symptom_time_value_name) from md_diagnose_detail dd where dd.diagnose_id = d.id and dd.level = 1) as main_sysptom,
+				(select GROUP_CONCAT( dd.symptom_time_value_name) from md_diagnose_detail dd where dd.diagnose_id = d.id and dd.level = 2) as less_sysptom,    
+				d.remark1,
+				d.remark2,
+				d.remark3,
+				dr.in_bw_first_name,  
+				dr.in_by_first_name,
+				dr.in_by_second_name, 
+				dr.prescription2_medicinal
+		  FROM  md_diagnose d ,md_customer c,md_diagnose_result dr
+		 where  d.customer_id = c.id
+		   and  d.id = dr.diagnose_id
+		   and  d.doctor_id = #{domain.doctor_id}
+		   and  (d.apply_reply_status =2 )
+		   and  c.id != -1
+	       <if test="domain.diagnose_date_start != null and domain.diagnose_date_start != ''">
+		   	   and d.diagnose_date <![CDATA[ >= ]]> #{domain.diagnose_date_start}
+	       </if>
+	       <if test="domain.diagnose_date_end != null and domain.diagnose_date_end != ''">
+		   	   and d.diagnose_date <![CDATA[ <= ]]> #{domain.diagnose_date_end}
+	       </if>
+	       order by d.id
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+	<!-- 对应 selectExpertCheckingDiagnoseData 查询条件同上-->
+	<select id="selectExpertCheckingDiagnoseCount"  resultType="int">
+		SELECT count(*)
+		  FROM  md_diagnose d ,md_customer c
+		 where  d.customer_id = c.id
+		   and  d.doctor_id = #{domain.doctor_id}
+		   and  (d.apply_reply_status =2 )
+		   and  c.id != -1
+	        <if test="domain.diagnose_date_start != null and domain.diagnose_date_start != ''">
+		   	   and d.diagnose_date <![CDATA[ >= ]]> #{domain.diagnose_date_start}
+	       </if>
+	       <if test="domain.diagnose_date_end != null and domain.diagnose_date_end != ''">
+		   	   and d.diagnose_date <![CDATA[ <= ]]> #{domain.diagnose_date_end}
+	       </if>
+	</select>
+	
+	
+	<select id="selectExpertCheckedDiagnoseData"  resultType="diagnose">
+		SELECT 
+			    d.id,
+			    d.reply_date,
+			    c.name as customer_name,
+			    d.diagnose_date,
+			    dr.id as diagnse_result_id,
+		        (select GROUP_CONCAT( dd.symptom_time_value_name) from md_diagnose_detail dd where dd.diagnose_id = d.id and dd.level = 1) as main_sysptom,
+				(select GROUP_CONCAT( dd.symptom_time_value_name) from md_diagnose_detail dd where dd.diagnose_id = d.id and dd.level = 2) as less_sysptom,    
+				d.remark1,
+				d.remark2,
+				d.remark3,
+				dr.in_bw_first_name,  
+				dr.in_by_first_name,
+				dr.in_by_second_name, 
+				dr.prescription2_medicinal
+		  FROM  md_diagnose d ,md_customer c,md_diagnose_result dr
+		 where  d.customer_id = c.id
+		   and  d.id = dr.diagnose_id
+		   and  d.doctor_id = #{domain.doctor_id}
+		   and  (d.apply_reply_status =3 )
+		   and  c.id != -1
+	       <if test="domain.diagnose_date_start != null and domain.diagnose_date_start != ''">
+		   	   and d.diagnose_date <![CDATA[ >= ]]> #{domain.diagnose_date_start}
+	       </if>
+	       <if test="domain.diagnose_date_end != null and domain.diagnose_date_end != ''">
+		   	   and d.diagnose_date <![CDATA[ <= ]]> #{domain.diagnose_date_end}
+	       </if>
+	       order by d.id
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+	<!-- 对应 selectExpertCheckedDiagnoseData 查询条件同上-->
+	<select id="selectExpertCheckedDiagnoseCount"  resultType="int">
+		SELECT count(*)
+		  FROM  md_diagnose d ,md_customer c
+		 where  d.customer_id = c.id
+		   and  d.doctor_id = #{domain.doctor_id}
+		   and  (d.apply_reply_status =3 )
+		   and  c.id != -1
+	        <if test="domain.diagnose_date_start != null and domain.diagnose_date_start != ''">
+		   	   and d.diagnose_date <![CDATA[ >= ]]> #{domain.diagnose_date_start}
+	       </if>
+	       <if test="domain.diagnose_date_end != null and domain.diagnose_date_end != ''">
+		   	   and d.diagnose_date <![CDATA[ <= ]]> #{domain.diagnose_date_end}
+	       </if>
+	</select>
+	
+
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.SymptomItemValueMapper">
+	
+	<select id="selectSymptomItemValueInfo"  resultType="symptomItemValue" parameterType="symptomItemValue">
+		SELECT 	* 
+		  FROM md_symptom_item_value 
+		 where 1=1
+		  <if test="meimei != null">
+		   	   and meimei = #{meimei}
+	      </if>
+	      
+	      <if test="xiaoer != null">
+		   	   and xiaoer = #{xiaoer}
+	      </if>
+	      
+	      <if test="bama != null">
+		   	   and bama = #{bama}
+	      </if>
+	      
+	      <if test="type != null and type != ''">
+		   	   and type = #{type}
+	      </if>
+	      
+	      <if test="sex != null">
+		   	   and ( sex = #{sex} or sex = 3 )
+	      </if>
+	</select>
+	
+	
+	<select id="selectSymptomItemValueInfoByArray"  resultType="symptomItemValue">
+		SELECT 	* 
+		  FROM md_symptom_item_value t
+		 where 1=1
+		   and t.id in 
+		   <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+		     #{item}
+		   </foreach>
+	</select>
+	
+	
+</mapper>

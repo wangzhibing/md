@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.MessageBoardMapper">
+	
+	<insert id="insertMessageBoard" useGeneratedKeys="true" keyProperty="id" parameterType="messageBoard">
+		insert into md_message_board (
+					title,
+					content,
+					time,
+					customer_id,
+					status,
+					filepath1,
+					filepath2,
+					remark
+				)
+		  values(
+					#{title},
+					#{content}, 
+					#{time}, 
+					#{customer_id}, 
+					#{status}, 
+					#{filepath1,jdbcType=VARCHAR},
+					#{filepath2,jdbcType=VARCHAR}, 
+					#{remark,jdbcType=VARCHAR}
+				)
+	</insert>
+	
+	<delete id="deleteMessageBoard" parameterType="string">
+	    delete from md_message_board  where id = #{value}
+	</delete>
+	
+	<update id="updateMessageBoard">
+		update md_message_board t 
+		<set>
+				<if test="status != null and status != '' ">status = #{status},</if>			
+		</set>
+		where
+		id = #{id}
+	
+	</update>
+	
+    <select id="selectMessageBoardByPk"  resultType="messageBoard" parameterType="long">
+		select 
+		        t.id,
+		        t.title,
+				t.content,
+				DATE_FORMAT(t.time,'%Y-%m-%d %H:%i:%S') time,
+				t.customer_id,
+				t.status,
+				t.filepath1,
+				t.filepath2,
+				t.remark,
+		        c.name as customer_name
+		  from  md_message_board t, md_customer c  
+		 where  1=1 
+		   and  t.customer_id = c.id 
+		   and  t.id = #{value}
+	</select>
+
+	<select id="selectMessageBoardData"  resultType="messageBoard">
+		SELECT 	t.id,
+		        t.title,
+				t.content,
+				DATE_FORMAT(t.time,'%Y-%m-%d %H:%i:%S') time,
+				t.customer_id,
+				t.status,
+				t.filepath1,
+				t.filepath2,
+				t.remark,
+		        c.name as customer_name
+		  FROM md_message_board t,md_customer c
+		 where 1=1 
+		   and t.customer_id = c.id
+		   <if test="domain.title != null and domain.title != ''">
+		   	   and t.title like '%${domain.title}%' 
+	       </if>
+	       <if test="domain.customer_id != null ">
+		   	   and t.customer_id = #{domain.customer_id}
+	       </if>
+		   <if test="domain.time_start != null and domain.time_start != ''">
+		   	   and substring(t.time,1,8) <![CDATA[ >= ]]> #{domain.time_start}
+	       </if>
+	       <if test="domain.time_end != null and domain.time_end != ''">
+		   	   and substring(t.time,1,8) <![CDATA[ <= ]]> #{domain.time_end}
+	       </if>
+		 
+		    <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+    <!-- 对应 selectMessageBoardData 查询条件同上-->
+    <select id="selectMessageBoardCount"  resultType="int">
+		 SELECT count(*) 
+		  FROM md_message_board t,md_customer c
+		 where 1=1 
+		   and t.customer_id = c.id
+		   <if test="domain.title != null and domain.title != ''">
+		   	   and t.title like '%${domain.title}%' 
+	       </if>
+	       <if test="domain.customer_id != null ">
+		   	   and t.customer_id = #{domain.customer_id}
+	       </if>
+		   <if test="domain.time_start != null and domain.time_start != ''">
+		   	   and substring(t.time,1,8) <![CDATA[ >= ]]> #{domain.time_start}
+	       </if>
+	       <if test="domain.time_end != null and domain.time_end != ''">
+		   	   and substring(t.time,1,8) <![CDATA[ <= ]]> #{domain.time_end}
+	       </if>
+	</select>
+	
+</mapper>

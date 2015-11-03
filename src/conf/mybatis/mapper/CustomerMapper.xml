@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.CustomerMapper">
+	
+	<insert id="insertCustomer" useGeneratedKeys="true" keyProperty="id" parameterType="customer">
+		insert into md_customer (
+				card_type, 
+				card_no, 
+				name, 
+				birth, 
+				age, 
+				sex,
+				tel, 
+				address, 
+				social_card_no, 
+				update_time, 
+				create_time, 
+				customer_type,
+				remark1, 
+				remark2, 
+				remark3, 
+				remark4, 
+				remark5, 
+				remark6,
+				login_name,
+				login_pwd
+				) 
+		values (
+				#{card_type},
+				#{card_no}, 
+				#{name}, 
+				#{birth}, 
+				#{age,jdbcType=INTEGER}, 
+				#{sex,jdbcType=INTEGER}, 
+				#{tel,jdbcType=VARCHAR}, 
+				#{address,jdbcType=VARCHAR},
+				#{social_card_no,jdbcType=VARCHAR}, 
+				#{update_time,jdbcType=VARCHAR}, 
+				#{create_time,jdbcType=VARCHAR}, 
+				#{customer_type,jdbcType=VARCHAR},
+				#{remark1,jdbcType=VARCHAR}, 
+				#{remark2,jdbcType=VARCHAR}, 
+				#{remark3,jdbcType=VARCHAR}, 
+				#{remark4,jdbcType=VARCHAR},
+				#{remark5,jdbcType=VARCHAR},
+				#{remark6,jdbcType=VARCHAR},
+				#{login_name,jdbcType=VARCHAR},
+				#{login_pwd,jdbcType=VARCHAR}
+				)
+	</insert>
+	
+	<delete id="deleteCustomerById" parameterType="string">
+		DELETE FROM
+		md_customer
+		WHERE id = #{id}
+	</delete>
+	
+	<update id="updateCustomer" parameterType="customer">
+		update md_customer 
+			<set>
+				<if test="name != null ">name = #{name},</if>
+				<if test="sex != null ">sex = #{sex},</if>
+				<if test="card_type != null ">card_type = #{card_type},</if>
+				<if test="card_no != null ">card_no = #{card_no},</if>
+				<if test="remark1 != null and remark1 != '' ">remark1 = #{remark1},</if>
+				<if test="birth != null and birth != '' ">birth = #{birth},</if>
+				<if test="tel != null and tel != '' ">tel = #{tel},</if>
+				<if test="address != null and address != '' ">address = #{address},</if>
+				<if test="social_card_no != null and social_card_no != '' ">social_card_no = #{social_card_no},</if>
+				<if test="login_pwd != null and login_pwd != '' ">login_pwd = #{login_pwd},</if>
+				<if test="update_time != null and update_time != '' ">update_time = #{update_time},</if>
+				<if test="customer_status != null and customer_status != '' ">customer_status = #{customer_status},</if>
+				<if test="apply_status != null and apply_status != '' ">apply_status = #{apply_status},</if>
+				<if test="know_status != null and know_status != '' ">know_status = #{know_status},</if>
+				<if test="customer_type != null and customer_type != '' ">customer_type = #{customer_type},</if>
+				<if test="apply_time != null and apply_time != '' ">apply_time = #{apply_time},</if>
+				<if test="applied_time != null and applied_time != '' ">applied_time = #{applied_time},</if>
+				<if test="is_on_line != null ">is_on_line = #{is_on_line},</if>
+			</set>
+		where
+		id = #{id}
+	</update>
+
+    <select id="selectCustomerById"  resultType="customer" parameterType="string">
+		SELECT 	* 
+		  FROM md_customer
+		 where 1=1 
+		   <if test="value != null and value != ''">
+		   	   and id = #{value}
+	       </if>
+	</select>
+
+	<select id="selectCustomerData"  resultType="customer" >
+		SELECT 	* 
+		  FROM md_customer t
+		 where 1=1 and id != -1 and customer_type in (1,2)
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if> 
+	       <if test="domain.customer_status != null and domain.customer_status != ''">
+		   	   and customer_status = #{domain.customer_status}
+	       </if>
+	       
+	       <if test="domain.apply_status != null and domain.apply_status != ''">
+		   	   and apply_status = #{domain.apply_status}
+	       </if>
+	       
+	       <if test="domain.name != null and domain.name != ''">
+		   	   and name like  '%${domain.name}%'
+	       </if>
+	       
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	       
+	       order by t.id desc
+		    <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+    <!-- 对应 selectMedicinalData 查询条件同上-->
+    <select id="selectCustomerCount"  resultType="int">
+		SELECT 	count(*) 
+		  FROM md_customer t
+		 where 1=1 and id != -1 and customer_type in (1,2)
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if>
+	       <if test="domain.customer_status != null and domain.customer_status != ''">
+		   	   and customer_status = #{domain.customer_status}
+	       </if>
+	       <if test="domain.apply_status != null and domain.apply_status != ''">
+		   	   and apply_status = #{domain.apply_status}
+	       </if>
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	</select>
+	
+	
+	
+	<select id="selectManagerExpertData"  resultType="customer" >
+		SELECT 	* 
+		  FROM md_customer t
+		 where 1=1 and id != -1 and customer_type in (3,10)
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if> 
+	       <if test="domain.customer_status != null and domain.customer_status != ''">
+		   	   and customer_status = #{domain.customer_status}
+	       </if>
+	       
+	       <if test="domain.apply_status != null and domain.apply_status != ''">
+		   	   and apply_status = #{domain.apply_status}
+	       </if>
+	       
+	       <if test="domain.name != null and domain.name != ''">
+		   	   and name like  '%${domain.name}%'
+	       </if>
+	       
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	       
+	       order by t.id desc
+		    <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+    <!-- 对应 selectManagerExpertData 查询条件同上-->
+    <select id="selectManagerExpertCount"  resultType="int">
+		SELECT 	count(*) 
+		  FROM md_customer t
+		 where 1=1 and id != -1 and customer_type in (3,10)
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if>
+	       <if test="domain.customer_status != null and domain.customer_status != ''">
+		   	   and customer_status = #{domain.customer_status}
+	       </if>
+	       <if test="domain.apply_status != null and domain.apply_status != ''">
+		   	   and apply_status = #{domain.apply_status}
+	       </if>
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	</select>
+	
+	
+	
+	<select id="selectExpertData"  resultType="customer" parameterType="customer">
+		SELECT 	* 
+		  FROM md_customer t
+		 where 1=1 and id != -1
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if>
+	       <if test="domain.customer_status != null and domain.customer_status != ''">
+		   	   and customer_status = #{domain.customer_status}
+	       </if>
+	       
+	       <if test="domain.apply_status != null and domain.apply_status != ''">
+		   	   and apply_status = #{domain.apply_status}
+	       </if>
+	       
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	       
+	       order by t.is_on_line 
+		    <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+    <!-- 对应 selectExpertData 查询条件同上-->
+    <select id="selectExpertCount"  resultType="int">
+		SELECT 	count(*) 
+		  FROM md_customer t
+		 where 1=1 and id != -1
+		  <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if>
+	       <if test="domain.customer_status != null and domain.customer_status != ''">
+		   	   and customer_status = #{domain.customer_status}
+	       </if>
+	       <if test="domain.apply_status != null and domain.apply_status != ''">
+		   	   and apply_status = #{domain.apply_status}
+	       </if>
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	</select>
+	
+	
+	<select id="selectCustomerByLoginNamePwd"  resultType="customer">
+		SELECT * 
+		  FROM md_customer
+		 where 1=1 
+		   and login_name = #{login_name}
+		   and login_pwd = #{login_pwd}
+	</select>
+	
+	<select id="selectCustomerByLoginName"  resultType="customer">
+		SELECT * 
+		  FROM md_customer
+		 where 1=1 
+		   and login_name = #{login_name}
+		   <if test="id != null">
+		   and id != #{id}
+	       </if>
+	</select>
+	
+	<select id="selectRegisterCount"  resultType="customerCount">
+		select (select count(id) from md_customer m where m.customer_type = 1) as registerCommonCount,
+       		   (select count(id) from md_customer m where m.customer_type = 2) as registerVipCount,
+        	   (select count(id) from md_customer m where m.customer_type = 10) as registerExpertCount from dual
+	</select>
+	
+	<select id="selectOnLineCount"  resultType="customerCount">
+		select (select count(id) from md_customer m where m.customer_type = 1 and m.is_on_line = 1) as onLineCommonCount,
+       		   (select count(id) from md_customer m where m.customer_type = 2 and m.is_on_line = 1) as onLineVipCount,
+        	   (select count(id) from md_customer m where m.customer_type = 10 and m.is_on_line = 1) as onLineExpertCount ,
+        	   (select count(id) from md_customer m where m.customer_type = 3 and m.is_on_line = 1) as onLineManagerCount
+          from dual
+	</select>
+	
+	<select id="selectRegisterOnlineCustomerData"  resultType="customer" >
+		SELECT 	* 
+		  FROM md_customer t
+		 where 1=1 and id != -1 
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if> 
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	       
+	       order by t.id desc
+		    <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+    <!-- 对应 selectRegisterOnlineCustomerData 查询条件同上-->
+    <select id="selectRegisterOnlineCustomerCount"  resultType="int">
+		SELECT 	count(*) 
+		  FROM md_customer t
+		 where 1=1 and id != -1 
+		   <if test="domain.customer_type != null and domain.customer_type != ''">
+		   	   and customer_type = #{domain.customer_type}
+	       </if> 
+	       <if test="domain.is_on_line != null and domain.is_on_line != ''">
+		   	   and is_on_line = #{domain.is_on_line}
+	       </if>
+	</select>
+	
+</mapper>

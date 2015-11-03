@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.UserMapper">
+	
+	<insert id="insertUser" parameterType="user">
+		INSERT INTO t_user (
+			t_id,
+			t_name,
+			t_phone,
+			t_address,
+			t_account_no,
+			t_rmk)  
+	 VALUE (
+	        #{id,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},
+			#{accountNo,jdbcType=VARCHAR},
+			#{rmk,jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<delete id="deleteById" parameterType="string">
+		DELETE FROM
+		t_user
+		WHERE t_id = #{id}
+	</delete>
+	
+	<update id="updateUser" parameterType="user">
+		UPDATE t_user
+		<set>
+			<if test="name != null ">t_name = #{name},</if>
+			<if test="phone != null ">t_phone = #{phone},</if>
+			<if test="address != null ">t_address = #{address},</if>
+			<if test="accountNo != null ">t_account_no = #{accountNo},</if>
+			<if test="rmk != null ">t_rmk = #{rmk}</if>
+		</set>
+		WHERE t_id = #{id}
+	</update>
+	
+	<select id="selectUserInfo"  resultType="user">
+		SELECT 
+				t_id as id,
+				t_name as name,
+				t_phone as phone,
+				t_address as address,
+				t_account_no as accountNo,
+				t_rmk as rmk
+		  FROM t_user
+		 where 1=1 
+		   <if test="domain.name != null and domain.name != ''">
+		   	   and t_name = #{domain.name}
+	       </if>
+	       <if test="domain.phone != null and domain.phone != ''">
+		   	   and t_phone = #{domain.phone}
+	       </if>
+	       <if test="domain.address != null and domain.address != ''">
+		   	   and t_address = #{domain.address}
+	       </if>
+	       
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	       
+	   <!--     <if test="start != null and start != '' and limit != null and limit != ''">
+		   	   limit #{start} ,#{limit}  
+	       </if> 
+	       
+	       <if test="start == null or start = '' or limit == null or limit == ''">
+		   	   limit 0,100
+	       </if>  -->
+	       
+		 
+	</select>
+	
+	<!-- 对应 selectUserInfo 查询条件同上-->
+	<select id="selectUserInfoCount"  resultType="int">
+		SELECT 
+				count(*)
+		  FROM t_user
+		 where 1=1 
+		   <if test="domain.name != null and domain.name != ''">
+		   	   and t_name = #{name}
+	       </if>
+	       <if test="domain.phone != null and domain.phone != ''">
+		   	   and t_phone = #{phone}
+	       </if>
+	       <if test="domain.address != null and domain.address != ''">
+		   	   and t_address = #{address}
+	       </if>
+	</select>
+	
+	<!-- 
+	<resultMap id="userResult" type="user">
+		<result property="id" column="t_id" />
+		<result property="name" column="t_name" />
+		<result property="phone" column="t_phone" />
+		<result property="address" column="t_address" />
+		<result property="accontNo" column="t_account_no" />
+		<result property="rmk" column="t_rmk" />
+	</resultMap>
+	<select id="selectUserInfo"  parameterType="user" resultMap="userResult">
+		SELECT 
+				t_id ,
+				t_name ,
+				t_phone ,
+				t_address,
+				t_account_no,
+				t_rmk
+		  FROM t_user
+	</select>
+	 -->
+	<select id="queryUserById"  resultType="user" parameterType="string">
+		SELECT 
+				t_id as id,
+				t_name as name,
+				t_phone as phone,
+				t_address as address,
+				t_account_no as accountNo,
+				t_rmk as rmk
+		  FROM t_user
+		 where t_id = #{id}
+		 
+	</select>
+
+
+
+</mapper>

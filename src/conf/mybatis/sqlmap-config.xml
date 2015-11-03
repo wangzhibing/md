@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- changes from the defaults -->
+		<setting name="lazyLoadingEnabled" value="false" />
+	</settings>
+	
+	<!-- 配置映射关系 -->
+	<typeAliases>
+		<typeAlias type="com.md.entity.User" alias="user"/>
+		<typeAlias type="com.md.entity.SymptomItemValue" alias="symptomItemValue"/>
+		<typeAlias type="com.md.entity.Diagnose" alias="diagnose"/>
+		<typeAlias type="com.md.entity.DiagnoseDetail" alias="diagnoseDetail"/>
+		<typeAlias type="com.md.entity.DiagnoseResult" alias="diagnoseResult"/>
+		<typeAlias type="com.md.entity.By" alias="by"/>
+		<typeAlias type="com.md.entity.Bw" alias="bw"/>
+		<typeAlias type="com.md.entity.Customer" alias="customer"/>
+		<typeAlias type="com.md.entity.CustomerCount" alias="customerCount"/>
+		<typeAlias type="com.md.entity.CustomerApplyinfo" alias="customerApplyinfo"/>
+		<typeAlias type="com.md.entity.SymptomPrescriptionValue" alias="symptomPrescriptionValue"/>
+		<typeAlias type="com.md.entity.BasePrescriptionValue" alias="basePrescriptionValue"/>
+		<typeAlias type="com.md.entity.Medicinal" alias="medicinal"/>
+		<typeAlias type="com.md.entity.MessageBoard" alias="messageBoard"/>
+	</typeAliases>
+</configuration>

@@ -1,0 +1,11 @@
+1、改“栏目名称” ：
+  /WebContent/page/login/main.jsp(239行)。
+  /WebContent/page/login/js/login.js(195行)。  
+  /src/com/md/controller/CustomerController.java(416行)。
+
+2、“返回首页(互联网)”
+  /WebContent/page/login/main.jsp(196行)。
+  
+ 
+3、医生照片签名
+  customer表中，有doctor_sign_name字段，专门存储对应的图片

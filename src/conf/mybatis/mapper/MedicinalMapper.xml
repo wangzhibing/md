@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.MedicinalMapper">
+	
+	<select id="selectMedicinalInfo"  resultType="medicinal">
+		SELECT 	* 
+		  FROM md_medicinal
+	</select>
+	
+	<select id="selectMedicinalData"  resultType="medicinal">
+		SELECT 	* 
+		  FROM md_medicinal
+		 where 1=1 
+		   <if test="queryValue != null and queryValue != ''">
+		   	   and ( code like '%${queryValue}%'  or name like '%${queryValue}%' )
+	       </if>
+	       
+	       <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+	<!-- 对应 selectMedicinalData 查询条件同上-->
+	<select id="selectMedicinalCount"  resultType="int">
+		SELECT 
+				count(*)
+		  FROM md_medicinal
+		 where 1=1 
+		    <if test="queryValue != null and queryValue != ''">
+		   	   and ( code like '%${queryValue}%'  or  name like '%${queryValue}%' )
+	       </if>
+	</select>
+	
+	<select id="selectMedicinalById"  resultType="medicinal">
+		SELECT 	* 
+		  FROM md_medicinal
+		 where 1=1 
+		   <if test="value != null and value != ''">
+		   	   and id = #{value}
+	       </if>
+	</select>
+</mapper>

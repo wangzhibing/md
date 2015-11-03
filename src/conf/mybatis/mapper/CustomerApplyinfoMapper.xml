@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.md.mapper.CustomerApplyinfoMapper">
+	
+	<insert id="insertCustomerApplyinfo" useGeneratedKeys="true" keyProperty="id" parameterType="customerApplyinfo">
+		insert into md_customer_applyinfo (
+				customer_id, 
+				customer_name, 
+				manager_customer_id, 
+				manager_customer_name, 
+				deal_status_before,
+				deal_status_after, 
+				deal_date, 
+				deal_time, 
+				deal_action,
+				remark,
+				remark1, 
+				remark2
+				) 
+		values (
+				#{customer_id},
+				#{customer_name,jdbcType=VARCHAR}, 
+				#{manager_customer_id}, 
+				#{manager_customer_name,jdbcType=VARCHAR}, 
+				#{deal_status_before,jdbcType=INTEGER}, 
+				#{deal_status_after,jdbcType=INTEGER}, 
+				#{deal_date,jdbcType=VARCHAR}, 
+				#{deal_time,jdbcType=VARCHAR}, 
+				#{deal_action,jdbcType=VARCHAR},
+				#{remark,jdbcType=VARCHAR},
+				#{remark1,jdbcType=VARCHAR}, 
+				#{remark2,jdbcType=VARCHAR}
+				)
+	</insert>
+	
+	
+
+	<select id="selectCustomerApplyinfoData"  resultType="customerApplyinfo" >
+		SELECT 	* 
+		  FROM md_customer_applyinfo t
+		 where 1=1 and id != -1
+		   <if test="domain.customer_id != null and domain.customer_id != ''">
+		   	   and customer_id = #{domain.customer_id} 
+	       </if>
+	       
+	       <if test="domain.manager_customer_id != null and domain.manager_customer_id != ''">
+		   	   and ( manager_customer_id = #{domain.manager_customer_id}  or manager_customer_id is null)
+	       </if>
+	       
+	       <if test="domain.deal_date_start != null and domain.deal_date_start != ''">
+		   	   and t.deal_date <![CDATA[ >= ]]> #{domain.deal_date_start}
+	       </if>
+	       
+	       <if test="domain.deal_date_end != null and domain.deal_date_end != ''">
+		   	   and t.deal_date <![CDATA[ <= ]]> #{domain.deal_date_end}
+	       </if>
+	       
+	       order by t.deal_date desc ,t.deal_time desc
+		    <choose> 
+		       <when test="start != null and limit != null">  
+	                 limit #{start} ,#{limit}  
+	           </when> 
+	           <otherwise>  
+	                 limit 0,100
+	           </otherwise>  
+           </choose>
+	</select>
+	
+    <!-- 对应 selectCustomerApplyinfoData 查询条件同上-->
+    <select id="selectCustomerApplyinfoCount"  resultType="int">
+		SELECT 	count(*) 
+		  FROM md_customer_applyinfo t
+		 where 1=1 and id != -1
+		   <if test="domain.customer_id != null and domain.customer_id != ''">
+		   	   and customer_id = #{domain.customer_id}
+	       </if>
+	       
+	       <if test="domain.manager_customer_id != null and domain.manager_customer_id != ''">
+		   	   and ( manager_customer_id = #{domain.manager_customer_id}  or manager_customer_id is null)
+	       </if>
+	       
+	       <if test="domain.deal_date_start != null and domain.deal_date_start != ''">
+		   	   and t.deal_date <![CDATA[ >= ]]> #{domain.deal_date_start}
+	       </if>
+	       
+	       <if test="domain.deal_date_end != null and domain.deal_date_end != ''">
+		   	   and t.deal_date <![CDATA[ <= ]]> #{domain.deal_date_end}
+	       </if>
+	       
+	</select>
+	
+</mapper>
