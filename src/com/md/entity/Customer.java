@@ -6,7 +6,7 @@ package com.md.entity;
  * @author owen
  */
 public class Customer {
-	private Long id;// bigint(20) NOT NULL AUTO_INCREMENT,
+	private Long id;// bigint(330) NOT NULL AUTO_INCREMENT,
 
 	private String card_type;// varchar(2) NOT NULL DEFAULT '1',
 
