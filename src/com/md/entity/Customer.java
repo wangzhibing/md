@@ -16,9 +16,9 @@ public class Customer {
 
 	private String birth;// archar(8) NOT NULL,
 
-	private Integer age;//   bbbbbbbbb   int(11) DEFAULT NULL,
+	private Integer age;//   bbbbbbbbb  test  int(11) DEFAULT NULL,
 
-	private Integer sex;// bbbbbbbvb  int(1) default :1-男，2-女
+	private Integer sex;// bbbbbbbvb  test int(1) default :1-男，2-女
 
 	private String tel;// nnnnnnnn varchar(20) DEFAULT NULL,
 
