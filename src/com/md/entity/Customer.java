@@ -12,7 +12,7 @@ public class Customer {
 
 	private String card_no;// varchar(30) NOT NULL,
 
-	private String name;// archar(50) NOT NULL,
+	private String name;// vvvvvvarchar(50) NOT NULL,
 
 	private String birth;// archar(8) NOT NULL,
 
