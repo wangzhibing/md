@@ -29,7 +29,7 @@ public class Medicinal {
 	
 	private String main_cure;//主治
 	
-	
+        // wangzhibing vvvvvv	
 
 	public String getSmell() {
 		return smell;
