@@ -9,7 +9,7 @@ public class Bw {
 	private Long id;// ` bigint(20) NOT NULL AUTO_INCREMENT, #病位编码
 	
 	private String name;// ` varchar(50) NOT NULL, #病位名称
-	
+//ccccc	
 	private String code;// ` varchar(10) NOT NULL, #病位代码
 	
 	private String remark1;// ` varchar(50), #备注字段1
