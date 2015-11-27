@@ -16,7 +16,7 @@ public class Diagnose {
 	private String diagnose_date;// varchar(8), #诊断日期
 
 	private String diagnose_time;// varchar(6), #诊断时间
-
+//wangzhibing cccc
 	private String remark1;// varchar(50), #备注字段1
 
 	private String remark2;// varchar(50), #备注字段2
