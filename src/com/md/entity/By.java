@@ -6,7 +6,8 @@ package com.md.entity;
  * @author owen
  */
 public class By {
-        //,,,,,,,,,,,,,,,,,,,	
+
+	//dddd
 	private Long id;// ` bigint(20) NOT NULL AUTO_INCREMENT, #病因编码
 	
 	private String type;// ` char(1) NOT NULL, #病因类型：1，内病因 2，外病因
