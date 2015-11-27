@@ -29,7 +29,8 @@ public class Medicinal {
 	
 	private String main_cure;//主治
 	
-        // wangzhibing vvvvvv	
+
+    // wangzhibing  wanglei vvvvvv	
 
 	public String getSmell() {
 		return smell;
