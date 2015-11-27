@@ -5,7 +5,7 @@ package com.md.entity;
  * @author owen
  */
 public class Bw {
-	
+        //bwbwbwbwbwbwbwbwbbwbbbw	
 	private Long id;// ` bigint(20) NOT NULL AUTO_INCREMENT, #病位编码
 	
 	private String name;// ` varchar(50) NOT NULL, #病位名称
