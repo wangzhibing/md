@@ -6,7 +6,7 @@ package com.md.entity;
  * @author owen
  */
 public class Diagnose {
-
+        //wanglei cccccccc
 	private Long id;// bigint(20) NOT NULL AUTO_INCREMENT, #诊断流水号
 
 	private Long customer_id;// bigint(20), #客户信息ID(customer表主键)
