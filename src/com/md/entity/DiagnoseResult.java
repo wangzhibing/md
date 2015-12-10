@@ -86,8 +86,8 @@ public class DiagnoseResult {
 	private String prescription5_name;// varchar(200), #处方5
 
 	private String prescription5_medicinal;// varchar(200), #处方5(对用药材)
-	
-	private String prescription6_medicinal;//医生确诊处方信息
+
+	private String prescription6_medicinal;// 医生确诊处方信息
 
 	private String ac_medicinal;
 
@@ -114,13 +114,22 @@ public class DiagnoseResult {
 	private String report; // 主诉
 
 	private String medical_history; // 病史
-	
-	private String sick_name; //病人名称
-	
-	private Integer sick_age; //病人年龄
+
+	private String sick_name; // 病人名称
+
+	private Integer sick_age; // 病人年龄
 
 	// 扩展属性
 	private String lessSymptomValue; // 次要症状
+
+	/** 临时处方 **/
+	private String prescription_interim_code;// #临时处方
+
+	private String prescription_interim_name;// #临时处方
+
+	private String prescription_interim_medicinal;// #临时处方(对用药材)
+
+	private String prescription_interim_medicinal_origin; // 临时药方，不带单位
 
 	public Integer getIs_first_diagnose() {
 		return is_first_diagnose;
@@ -576,6 +585,40 @@ public class DiagnoseResult {
 
 	public void setSick_age(Integer sick_age) {
 		this.sick_age = sick_age;
+	}
+
+	public String getPrescription_interim_code() {
+		return prescription_interim_code;
+	}
+
+	public void setPrescription_interim_code(String prescription_interim_code) {
+		this.prescription_interim_code = prescription_interim_code;
+	}
+
+	public String getPrescription_interim_name() {
+		return prescription_interim_name;
+	}
+
+	public void setPrescription_interim_name(String prescription_interim_name) {
+		this.prescription_interim_name = prescription_interim_name;
+	}
+
+	public String getPrescription_interim_medicinal() {
+		return prescription_interim_medicinal;
+	}
+
+	public void setPrescription_interim_medicinal(
+			String prescription_interim_medicinal) {
+		this.prescription_interim_medicinal = prescription_interim_medicinal;
+	}
+
+	public String getPrescription_interim_medicinal_origin() {
+		return prescription_interim_medicinal_origin;
+	}
+
+	public void setPrescription_interim_medicinal_origin(
+			String prescription_interim_medicinal_origin) {
+		this.prescription_interim_medicinal_origin = prescription_interim_medicinal_origin;
 	}
 
 }

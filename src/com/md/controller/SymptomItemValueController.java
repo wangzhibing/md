@@ -27,6 +27,7 @@ import com.md.entity.DiagnoseDetail;
 import com.md.entity.DiagnoseResult;
 import com.md.entity.SymptomItemValue;
 import com.md.service.CustomerService;
+import com.md.service.DiagnoseCoreService;
 import com.md.service.DiagnoseService;
 import com.md.service.SymptomItemValueService;
 import com.md.service.impl.PDFUtils;
@@ -44,6 +45,9 @@ public class SymptomItemValueController extends BaseController{
 	
 	@Resource
 	private DiagnoseService diagnoseService;
+	
+	@Resource
+	private DiagnoseCoreService diagnoseCoreService;
 	
 	@Resource
 	private CustomerService customerService;
@@ -269,7 +273,7 @@ public class SymptomItemValueController extends BaseController{
 		try {
 			 HttpSession session =  request.getSession();
 			 Customer loginCustomer = (Customer)session.getAttribute(Constant.SESSION_ID);
-			 diagnoseResult = diagnoseService.doDiagnose(symptomItem,mainSymptom,loginCustomer,sex);
+			 diagnoseResult = diagnoseCoreService.doDiagnose(symptomItem,mainSymptom,loginCustomer,sex);
 			 String publishPath = request.getScheme() + "://" + request.getServerName()
 					 +":" + request.getServerPort()+ request.getContextPath() + "/";
 			 return new ResponseObj(Constant.STATUSCODE_SUCCESS, "操作成功", "hjm", "", "forward", publishPath+"md/symptomItemValue/doSymptomItemJsp.do?diagnoseResultId="+diagnoseResult.getId());

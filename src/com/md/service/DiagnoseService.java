@@ -17,12 +17,6 @@ import com.md.entity.DiagnoseResult;
 public interface DiagnoseService {
 	
 	/**
-	 * 处理诊断业务信息
-	 * @param symptomItem
-	 */
-	public DiagnoseResult doDiagnose(String[] symptomItems,String mainSymptom,Customer loginCustomer,String sex)  throws Exception;
-	
-	/**
 	 * 获取诊断结果信息列表 ==>查单个
 	 * @param id
 	 * @return

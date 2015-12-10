@@ -25,5 +25,7 @@
 		<typeAlias type="com.md.entity.BasePrescriptionValue" alias="basePrescriptionValue"/>
 		<typeAlias type="com.md.entity.Medicinal" alias="medicinal"/>
 		<typeAlias type="com.md.entity.MessageBoard" alias="messageBoard"/>
+		<typeAlias type="com.md.entity.DrugStore" alias="drugStore"/>
+		<typeAlias type="com.md.entity.InterimPrescription" alias="interimPrescription"/>
 	</typeAliases>
 </configuration>
