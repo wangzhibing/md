@@ -124,17 +124,12 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 			diagnoseResult = this.doAchievePrescription(diagnoseResult,mainSymptom);
 			
 			/**5、拿临时药方 与 中成药库曲比对数据
-			 * 5.1、
-			 * 
-			 * 
-			 * 
-			 * 
+			 * 5.1、内病因1、内病因2与中成药方进行对比（怎么对比，等待泥工回话） TODO
+			 * 5.2、内病因对比结果不超过2条中成药，则直接返回。
+			 * 5.3、内病因对比结果超过2条，则进行药名(药材)对比环节。
+			 * 5.4、药材符合超过5味（含）,则返回。（前2名）。
+			 * 5.5、针对5.4,没有超过5味（含），则返回空。
 			 */
-			 
-			
-			
-			
-			
 			
 			logger.info("处理诊断业务信息结束。。。");
 			return diagnoseResult;
