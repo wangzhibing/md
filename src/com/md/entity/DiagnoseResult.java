@@ -131,6 +131,15 @@ public class DiagnoseResult {
 
 	private String prescription_interim_medicinal_origin; // 临时药方，不带单位
 
+	/** 与APP进行交互数据 **/
+	private String wholeAppID;
+
+	/** 中成药1 */
+	private String drug_medicinal1;
+
+	/** 中成药2 */
+	private String drug_medicinal2;
+
 	public Integer getIs_first_diagnose() {
 		return is_first_diagnose;
 	}
@@ -619,6 +628,30 @@ public class DiagnoseResult {
 	public void setPrescription_interim_medicinal_origin(
 			String prescription_interim_medicinal_origin) {
 		this.prescription_interim_medicinal_origin = prescription_interim_medicinal_origin;
+	}
+
+	public String getWholeAppID() {
+		return wholeAppID;
+	}
+
+	public void setWholeAppID(String wholeAppID) {
+		this.wholeAppID = wholeAppID;
+	}
+
+	public String getDrug_medicinal1() {
+		return drug_medicinal1;
+	}
+
+	public void setDrug_medicinal1(String drug_medicinal1) {
+		this.drug_medicinal1 = drug_medicinal1;
+	}
+
+	public String getDrug_medicinal2() {
+		return drug_medicinal2;
+	}
+
+	public void setDrug_medicinal2(String drug_medicinal2) {
+		this.drug_medicinal2 = drug_medicinal2;
 	}
 
 }

@@ -4,6 +4,8 @@
 
 <mapper namespace="com.md.mapper.DrugStoreMapper">
 
-	
+	<select id="selectAllDrugStoreList"  resultType="drugStore">
+		select * from md_drug_store
+	</select>	
 
 </mapper>

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.md.common.Constant;
 import com.md.common.DateUtil;
+import com.md.common.MatchDrugComparable;
 import com.md.common.MedicinalValue;
 import com.md.common.SIVComparable;
 import com.md.entity.BasePrescriptionValue;
@@ -27,6 +28,7 @@ import com.md.entity.Customer;
 import com.md.entity.Diagnose;
 import com.md.entity.DiagnoseDetail;
 import com.md.entity.DiagnoseResult;
+import com.md.entity.DrugStore;
 import com.md.entity.SymptomItemValue;
 import com.md.entity.SymptomPrescriptionValue;
 import com.md.mapper.DiagnoseMapper;
@@ -34,6 +36,7 @@ import com.md.service.BasePrescriptionService;
 import com.md.service.BwService;
 import com.md.service.ByService;
 import com.md.service.DiagnoseCoreService;
+import com.md.service.DrugStoreService;
 import com.md.service.MedicinalService;
 import com.md.service.SymptomItemValueService;
 import com.md.service.SymptomPrescriptionService;
@@ -68,6 +71,9 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 	
 	@Resource
 	private MedicinalService medicinalService;
+	
+	@Resource
+	private DrugStoreService drugStoreService;
 	
 	private static final String wby[] = {"W1","W2","W3","W4","W5","W6","W7","W8","W9"};
 	
@@ -124,12 +130,66 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 			diagnoseResult = this.doAchievePrescription(diagnoseResult,mainSymptom);
 			
 			/**5、拿临时药方 与 中成药库曲比对数据
-			 * 5.1、内病因1、内病因2与中成药方进行对比（怎么对比，等待泥工回话） TODO
+			 * 5.1、内病因1、内病因2与中成药方进行对比（怎么对比，等待泥工回话）  不处理
+			 *      拿到内病因1、内病因2汉字进行like？？？       
+			 * 
 			 * 5.2、内病因对比结果不超过2条中成药，则直接返回。
 			 * 5.3、内病因对比结果超过2条，则进行药名(药材)对比环节。
+			 *      diagnoseResult.getPrescription_interim_medicinal_origin(),与中成药库进行比对
+			 *      挨个挨个进行组合。
+			 *  
 			 * 5.4、药材符合超过5味（含）,则返回。（前2名）。
 			 * 5.5、针对5.4,没有超过5味（含），则返回空。
 			 */
+			String interimPrescription = diagnoseResult.getPrescription_interim_medicinal_origin();
+			if(StringUtils.isNotBlank(interimPrescription) || interimPrescription.split(",").length >= 5){
+				String[] interimPreArr =  interimPrescription.split(",");
+				List<String> interimMedicineList =  new ArrayList<String>(interimPreArr.length);
+				for(String interimMedicine : interimPreArr){
+					interimMedicineList.add(this.doRemoveSpecChar(interimMedicine));
+				}
+				
+				Map<String, DrugStore> mapDurgStore = drugStoreService.queryAllDrugStoreMap();
+				if(mapDurgStore != null && mapDurgStore.size() > 0){
+					//记录符合的中成药库
+					List<MatchDrugComparable> matchDrugList = new ArrayList<MatchDrugComparable>();
+				    int count = 0;  //统计药材相同的次数
+					for(Map.Entry<String, DrugStore> entry : mapDurgStore.entrySet()){
+						count = 0;
+						//拿每个中成药库去和临时药方比对  格式  干地黄、山药、山茱萸（酒炙）、茯苓、牡丹皮、泽泻、桂枝、附子（炙）、牛膝（去头）、车前子（盐炙）、蜂蜜、
+						DrugStore drugStore = entry.getValue();
+						String drugStoreMedicinal = drugStore.getDrug_medicinal(); //中成药库药份
+						//临时药方
+						for(String interimMedicine : interimMedicineList){
+							if(drugStoreMedicinal.indexOf(interimMedicine) >= 0){
+								//代表包含临时药方的一个药材
+								count++;
+							}
+						}
+						
+						if(count >= 5){
+							MatchDrugComparable matchDrugComparable = new MatchDrugComparable(drugStore.getDrug_name(), drugStore.getDrug_code(), count);
+							matchDrugList.add(matchDrugComparable);
+						}
+					}
+					
+					Collections.sort(matchDrugList, Collections.reverseOrder());
+					
+					//对符合的中成药库进行比对，取最优的。
+					int matchSize = matchDrugList.size();
+					if(matchSize ==1 ){
+						MatchDrugComparable matchDrug = matchDrugList.get(0); 
+						diagnoseResult.setDrug_medicinal1(matchDrug.getDrug_name());					
+					}
+					
+					if(matchSize >= 2){		
+						MatchDrugComparable matchDrug1 = matchDrugList.get(0); 
+						diagnoseResult.setDrug_medicinal1(matchDrug1.getDrug_name());
+						MatchDrugComparable matchDrug2 = matchDrugList.get(1); 
+						diagnoseResult.setDrug_medicinal2(matchDrug2.getDrug_name());
+					}
+				}
+			}
 			
 			logger.info("处理诊断业务信息结束。。。");
 			return diagnoseResult;
@@ -729,7 +789,6 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 		return diagnoseResult;
 	}
 	
-	
 	/**
 	 * 获取药材属性
 	 * @param ac_code  必输，不为空
@@ -845,7 +904,7 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 					pescriptionIngoreUnit += ",";
 				}
 				pescription += medicinalName + (int)mv.getMedicinal_value() +"g";
-				pescriptionIngoreUnit += pescriptionIngoreUnit ;
+				pescriptionIngoreUnit += medicinalName ;
 			}
 			else{
 				if(!StringUtils.isBlank(pescription)){
@@ -853,7 +912,7 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 					pescriptionIngoreUnit += ",";
 				}
 				pescription += medicinalName + "（"+medicinalService.queryMedicinalActionName(String.valueOf(mv.getMedicinal_action()))+"）" + (int)mv.getMedicinal_value()+"g";
-				pescriptionIngoreUnit += pescriptionIngoreUnit + "（"+medicinalService.queryMedicinalActionName(String.valueOf(mv.getMedicinal_action()))+"）";
+				pescriptionIngoreUnit += medicinalName;
 			}
 		}
 		
@@ -874,8 +933,6 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 		//return pescription;
 		return  pescriptionArr;
 	}
-	
-	
 	
 	/**
 	 * 获取药材属性
@@ -1167,5 +1224,27 @@ public class DiagnoseCoreServiceImpl implements DiagnoseCoreService {
 		}
 	}
 	
-
+	/**
+	 * 去掉原有字符：
+	 * 比如：鸡蛋黄一个   处理后返回  鸡蛋黄
+	 * @param originValue
+	 * 特殊字符，后续可以加上，目前就这些
+	 * @return
+	 */
+    private String doRemoveSpecChar(String originValue){
+    	String[] specValueArr = {"1","2","3","4"};
+    	for(String sv : specValueArr){
+    		int index = originValue.indexOf(sv);
+    		if(index > 0){
+    			return originValue.substring(0, index);
+    		}
+    	}
+    	return originValue;
+    }
+    
+    public static void main(String[] args) {
+    	DiagnoseCoreServiceImpl aa = new DiagnoseCoreServiceImpl();
+    	System.out.println(aa.doRemoveSpecChar("鸡蛋黄1个"));
+	}
+    
 }

@@ -9,8 +9,11 @@ public class DrugStore {
 
 	private Long id;
 
-	/*** 内科中成药 */
+	/*** 内科中成药name */
 	private String drug_name;
+
+	/*** 内科中成药code */
+	private String drug_code;
 
 	/** 药物成分 */
 	private String drug_medicinal;
@@ -53,6 +56,14 @@ public class DrugStore {
 
 	public void setDrug_name(String drug_name) {
 		this.drug_name = drug_name;
+	}
+
+	public String getDrug_code() {
+		return drug_code;
+	}
+
+	public void setDrug_code(String drug_code) {
+		this.drug_code = drug_code;
 	}
 
 	public String getDrug_medicinal() {

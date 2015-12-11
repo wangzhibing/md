@@ -56,6 +56,7 @@ public class SIVComparable implements Comparable<SIVComparable> {
 	}
 
 	public Float getValue() {
+		
 		return value;
 	}
 
